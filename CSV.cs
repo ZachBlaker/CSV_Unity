@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class CSV
 {
-    public const string SEPERATOR = ",";
-    static public string NEWLINE = "\n";
+    const string SEPERATOR = ",";
+    const string NEWLINE = "\n";
 
     public class CSVCell
     {
