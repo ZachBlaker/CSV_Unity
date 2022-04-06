@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Text.RegularExpressions;
 using System.IO;
+using UnityEditor;
 
-public static class CSVImporter
+
+public static class CSVUtility
 {
     const string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
     const string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
@@ -51,4 +53,15 @@ public static class CSVImporter
     static string[] GetCellsFromRowString(string rowString)
         => Regex.Split(rowString, SPLIT_RE);
 
+    public static void SaveCSV(CSV csv, string fullPath)
+    {
+        StreamWriter writer = new StreamWriter(fullPath);
+
+        string contents = csv.GetContentsAsText();
+        writer.Write(contents);
+
+        writer.Flush();
+        writer.Close();
+        AssetDatabase.Refresh();
+    }
 }
