@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class CSV
 {
+    public const string SEPERATOR = ",";
+    static public string NEWLINE = "\n";
+
     public class CSVCell
     {
         public readonly int columnIndex;
@@ -19,26 +22,37 @@ public class CSV
     private class CSVRow
     {
         public readonly int rowIndex;
-        public readonly CSVCell[] cells;
         public string header => cells[0].contents;
+
+        readonly CSVCell[] cells;
 
         public CSVRow(int rowIndex, CSVCell[] cells)
         {
             this.rowIndex = rowIndex;
             this.cells = cells;
         }
+        public string this[int index]
+        {
+            get => cells[index].contents;
+            set => cells[index].contents = value;
+        }
     }
     private class CSVColumn
     {
         public readonly int columnIndex;
-        public readonly CSVCell[] cells;
         public string header => cells[0].contents;
 
+        readonly CSVCell[] cells;
 
         public CSVColumn(int columnIndex, CSVCell[] cells)
         {
             this.columnIndex = columnIndex;
             this.cells = cells;
+        }
+        public string this[int index]
+        {
+            get => cells[index].contents;
+            set => cells[index].contents = value;
         }
     }
 
@@ -134,9 +148,26 @@ public class CSV
             for (int columnIndex = 0; columnIndex < columnCount; columnIndex++)
             {
                 string header = columns[columnIndex].header;
-                string contents = currentRow.cells[columnIndex].contents;
+                string contents = currentRow[columnIndex];
                 Debug.Log("     " + $"{header} : {contents}");
             }
         }
+    }
+
+
+    public string GetContentsAsText()
+    {
+        string text = "";
+        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+        {
+            for (int columnIndex = 0; columnIndex < columnCount; columnIndex++)
+            {
+                text += GetCellContents(columnIndex, rowIndex);
+                if (columnIndex < columnCount - 1) //Only add comma if not last item in a row
+                    text += SEPERATOR;
+            }
+            text += NEWLINE;
+        }
+        return text;
     }
 }
