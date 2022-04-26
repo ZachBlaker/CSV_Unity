@@ -14,13 +14,19 @@ namespace SpreadSheets.Internal
             this.rowIndex = rowIndex;
             this.contents = contents;
         }
+
+
+        public override string ToString()
+        {
+            return $"Cell {columnIndex} , {rowIndex} : {contents} ";
+        }
     }
 
 
     public class CSVRow
     {
         public readonly int rowIndex;
-        public string header => cells[0].contents;
+        public string rowHeader => cells[0].contents;
 
         readonly CSVCell[] cells;
 
@@ -34,6 +40,22 @@ namespace SpreadSheets.Internal
             get => cells[index].contents;
             set => cells[index].contents = value;
         }
+        public string[] GetContentsArray()
+        {
+            string[] contentsArray = new string[cells.Length];
+            for (int i = 0; i < cells.Length; i++)
+                contentsArray[i] = cells[i].contents;
+            return contentsArray;
+        }
+
+        public override string ToString()
+        {
+            string result = $"Row {rowIndex} with {cells.Length} cells contains: ";
+            foreach (CSVCell cell in cells)
+                result += $"{cell.ToString()} , ";
+            return result;
+        }
+
     }
 
 
@@ -53,6 +75,22 @@ namespace SpreadSheets.Internal
         {
             get => cells[index].contents;
             set => cells[index].contents = value;
+        }
+
+        public string[] GetContentsArray()
+        {
+            string[] contentsArray = new string[cells.Length];
+            for (int i = 0; i < cells.Length; i++)
+                contentsArray[i] = cells[i].contents;
+            return contentsArray;
+        }
+
+        public override string ToString()
+        {
+            string result = $"Column {columnIndex} with {cells.Length} cells contains: ";
+            foreach (CSVCell cell in cells)
+                result += $"{cell.ToString()} , ";
+            return result;
         }
     }
 
